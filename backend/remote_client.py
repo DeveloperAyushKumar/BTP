@@ -15,9 +15,16 @@ from PIL import Image
 
 logger = logging.getLogger(__name__)
 
-# Load backend URL from environment or .env file
+# Load backend URL from environment, Streamlit secrets, or .env file
 def _get_backend_url() -> str:
     url = os.environ.get("KAGGLE_BACKEND_URL", "")
+    if not url:
+        # Try Streamlit secrets (for Streamlit Cloud deployment)
+        try:
+            import streamlit as st
+            url = st.secrets.get("KAGGLE_BACKEND_URL", "")
+        except Exception:
+            pass
     if not url:
         env_path = Path(__file__).resolve().parent.parent / ".env"
         if env_path.exists():
