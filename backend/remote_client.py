@@ -56,7 +56,7 @@ class RemoteClient:
     """Client to communicate with the Kaggle FastAPI backend."""
 
     def __init__(self, base_url: Optional[str] = None):
-        self.base_url = base_url or BACKEND_URL
+        self.base_url = base_url or _get_backend_url()
         if not self.base_url:
             raise RuntimeError(
                 "KAGGLE_BACKEND_URL not set. "
